@@ -96,6 +96,22 @@ Safe Mode neutralizes drift by placing an **explicit, unbreakable anchor comment
 2. **Mandatory double quotes** for all labels  
 3. **Direct symbol matching** – the symbols in the comment are the exact template to copy  
 
+### Simplicity Over Aesthetics: Why Styling is Disabled
+
+In **fast** and **light mode** deployments (Turbo models, real-time chat, RAG pipelines), **simplicity matters**. Stability trumps aesthetics.
+
+Mermaid Safe Mode explicitly **disables styling features** (`style`, `classDef`, `linkStyle`, CSS properties) for a critical reason: generating style code significantly increases error probability in LLMs.
+
+**Why simplicity wins:**
+
+- **Reduced Cognitive Load**: Requiring models to simultaneously handle logical structure (`A --> B`) and visual styling (colors, borders) divides attention, leading to logical errors and syntax mistakes.
+- **Fewer Failure Points**: Mermaid's styling syntax (`classDef`) introduces additional syntax traps—models frequently hallucinate CSS properties, misuse keywords, or forget to apply defined styles.
+- **Goal Alignment**: In fast/light mode scenarios, users need **reliable, error-free diagrams that render instantly**, not beautiful diagrams that may fail to render at all.
+
+**The trade-off is intentional**: A plain, functional diagram that works 100% of the time is infinitely more valuable than a styled diagram that breaks 15% of the time.
+
+If visual distinction is needed, use different node shapes (Decision `{}`, Action `[]`, Stadium `([...])`) instead of colors. This maintains reliability while providing semantic clarity—exactly what fast/light mode deployments require.
+
 ---
 
 ## Production-Ready System Prompt (Copy-Paste Ready)

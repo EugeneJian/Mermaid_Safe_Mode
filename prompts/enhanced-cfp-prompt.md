@@ -68,6 +68,55 @@ All labels must be wrapped in double quotes to prevent special character interfe
 
 The symbols in the comment are the **exact template** to copy. No interpretation needed.
 
+### Rule 5: No Styling (Mandatory)
+
+**DO NOT** use Mermaid styling features (`style`, `classDef`, `linkStyle`, or CSS properties). Keep diagrams plain and functional.
+
+**Why Styling is Disabled:**
+
+For LLMs (Large Language Models), generating style code significantly increases error probability:
+
+1. **Increased Complexity**: Requiring the model to simultaneously focus on logical structure (`A --> B`) and visual styling (colors, borders) divides attention, leading to logical errors.
+
+2. **Syntax Traps**: Mermaid's styling syntax (`classDef`) is easily confused by some models. Common mistakes include:
+   - Adding an extra `class` keyword
+   - Confusing CSS property names
+   - Incorrect `classDef` syntax
+   - Forgetting to apply styles after defining them
+
+3. **Goal Conflict**: Our core objective is to generate **robust, error-free diagram code**, not "beautiful" diagrams. Styling is a secondary concern that introduces unnecessary failure points.
+
+4. **Attention Drift Amplification**: Styling adds another layer of complexity that can trigger Attention Drift, especially in Turbo models with limited reasoning capacity.
+
+**Examples of Styling Errors to Avoid:**
+
+❌ **Incorrect classDef syntax**:
+```mermaid
+classDef errorClass fill:#f96,stroke:#333,stroke-width:2px class  # Wrong: extra "class"
+```
+
+❌ **Hallucinated CSS properties**:
+```mermaid
+classDef myClass background-color:#f96  # Wrong: should be "fill", not "background-color"
+```
+
+❌ **Forgot to apply class**:
+```mermaid
+classDef redClass fill:#f96
+A["Node"]  # Wrong: class defined but never applied
+```
+
+✅ **Correct (No Styling)**:
+```mermaid
+graph TD
+    %% Type: Action []
+    A["Node"]
+    B["Another Node"]
+    A --> B
+```
+
+**Best Practice**: If visual distinction is needed, use different node shapes (Decision `{}`, Action `[]`, Stadium `([...])`) instead of colors. This maintains reliability while providing semantic clarity.
+
 ## Complete Example
 
 ```mermaid
@@ -124,12 +173,27 @@ Check["Is Valid?"]  # Comment says {} but used []
 Check{"Is Valid?"}  # Perfect match
 ```
 
+❌ **Using styling (forbidden)**:
+```mermaid
+classDef errorClass fill:#f96
+%% Type: Decision {}
+Check{"Is Valid?"}
+class Check errorClass  # Styling increases error risk
+```
+
+✅ **Correct (no styling)**:
+```mermaid
+%% Type: Decision {}
+Check{"Is Valid?"}  # Plain and functional
+```
+
 ## Performance Impact
 
 - **Token overhead**: ~15-20 tokens per node (minimal)
 - **Latency impact**: Negligible (<50ms)
 - **Reliability gain**: 100% elimination of bracket-mismatch errors
 - **Cost**: Essentially zero (vs reasoning models)
+- **Styling disabled**: Eliminates style-related syntax errors and reduces cognitive load on the model
 
 ## Extension to Other Domains
 

@@ -104,6 +104,9 @@ To prevent syntax errors, you MUST follow the Enhanced Comment-First Protocol:
 3. ALWAYS enclose node labels in double quotes.
    - *Safety Note*: If the label text itself contains quotes, use single quotes inside (e.g., "User says 'Hello'").
 
+4. DO NOT use styling features (style, classDef, linkStyle, CSS properties).
+   - Keep diagrams plain and functional. Stability trumps aesthetics in fast/light mode.
+
 Example:
    %% Type: Action []
    A["Start Process"]
@@ -131,6 +134,20 @@ Reliability is not just about *how* you prompt, but *what* you ask for. We recom
     *   Avoid custom styling (colors, subgraphs, classes).
     *   Stick to standard shapes (`[]`, `{}`, `([])`).
 *   **Result**: Sub-3s latency, >99% reliability.
+
+#### Why Simplicity Matters in Fast/Light Mode
+
+In **fast** and **light mode** deployments (Turbo models, real-time chat, RAG pipelines), **simplicity matters**. **Stability trumps aesthetics.**
+
+Mermaid Safe Mode explicitly **disables styling features** (`style`, `classDef`, `linkStyle`, CSS properties) because generating style code significantly increases error probability in LLMs:
+
+- **Reduced Cognitive Load**: Requiring models to simultaneously handle logical structure and visual styling divides attention, leading to errors.
+- **Fewer Failure Points**: Styling syntax introduces additional traps—models frequently hallucinate CSS properties or misuse keywords.
+- **Goal Alignment**: Users need **reliable, error-free diagrams that render instantly**, not beautiful diagrams that may fail to render.
+
+**The trade-off is intentional**: A plain, functional diagram that works 100% of the time is infinitely more valuable than a styled diagram that breaks 15% of the time.
+
+If visual distinction is needed, use different node shapes (Decision `{}`, Action `[]`, Stadium `([...])`) instead of colors. This maintains reliability while providing semantic clarity—exactly what fast/light mode deployments require.
 
 ### Tier 2: High-Fidelity / Complex Reporting
 **Goal**: Detailed architecture diagrams, complex workflows, publication-quality outputs.

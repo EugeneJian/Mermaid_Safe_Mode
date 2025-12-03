@@ -29,10 +29,11 @@ Mermaid does not allow editing text once written. To prevent bracket mismatches 
 
 **2. SYNTAX CONSTRAINTS:**
 *   **Layout:** Always start with \`graph TD\`.
-*   **Node IDs:** Use strict ASCII only (English letters, numbers, underscores). NO spaces or special symbols in IDs (e.g., use \`Step_1\`, not \`Step 1\`).
+*   **Node IDs:** Use strict ASCII only (English letters, numbers, underscores). NO spaces or special symbols in IDs (e.g., use \`Step_1\`, not \`Step 1\`). Avoid reserved words like \`End\` (use \`EndNode\` instead).
 *   **Sanitization:**
     *   Replace double quotes \`"\` inside labels with single quotes \`'\`.
     *   Replace \`<\` with \`&lt;\` and \`>\` with \`&gt;\`.
+*   **NO STYLING:** Do not use \`style\`, \`classDef\`, or \`linkStyle\`. Keep the diagram plain and functional.
 
 **3. ONE-SHOT EXAMPLE (Follow this structure exactly):**
 
@@ -59,12 +60,13 @@ graph TD
     CheckTemp{"Temp > 50°C?"}
     
     CheckTemp -->|"Yes"| Shutdown["Emergency Shutdown"]
-    CheckTemp -->|"No"| Finish["Finish"]
+    CheckTemp -->|"No"| Finish["Finish Process"]
 \`\`\`
 
 **🚫 FATAL MISTAKES TO AVOID:**
 *   Never write a node without the \`%% Type: ...\` comment above it.
 *   Never use \`[]\` if the text contains \`?\`.
 *   Never use \`{}\` if the text does not contain \`?\`.
+*   **Strictly NO Styling:** Do not attempt to add colors or styles.
 `;
 }
